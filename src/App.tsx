@@ -3,13 +3,14 @@ import { Species } from "./Type/Type";
 import "./App.css";
 import Output from "./Componets/Output/Output";
 import Search from "./Componets/Search/Search";
+import ButtonWithError from "./Componets/ButtonWithError/ButtonWithError";
 
 type State = {
   dataSW: Species[];
   countPage: number;
   checkSearchWord: boolean;
 };
-class App extends Component<State> {
+class App extends Component<Record<string, never>, State> {
   state = {
     dataSW: [],
     countPage: 1,
@@ -28,7 +29,7 @@ class App extends Component<State> {
     this.setState({ countPage: this.state.countPage + 1 });
   }
 
-  componentDidUpdate(_: State, prevState: State) {
+  componentDidUpdate(_: never, prevState: State) {
     if (prevState.countPage !== this.state.countPage) {
       this.fetchData();
     }
@@ -75,6 +76,7 @@ class App extends Component<State> {
           counterMinus={this.eventСounterDicrement.bind(this)}
           numberPagination={this.state.countPage}
         />
+        <ButtonWithError />
       </div>
     );
   }
