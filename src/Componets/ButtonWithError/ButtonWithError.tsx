@@ -15,7 +15,10 @@ class ButtonWithError extends Component<Record<string, never>, inputVariables> {
     }
 
     return (
-      <button onClick={() => this.setState({ hasError: true })}>
+      <button
+        style={{ margin: 20 }}
+        onClick={() => this.setState({ hasError: true })}
+      >
         Сalling an error
       </button>
     );

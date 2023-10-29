@@ -1,5 +1,5 @@
 import { Component, ChangeEvent } from "react";
-//import Output from "../Output/Output";
+import "./Search.css";
 import { Species } from "../../Type/Type";
 
 type OutputProps = {
@@ -29,13 +29,19 @@ class Search extends Component<OutputProps, inputVariables> {
 
   render() {
     return (
-      <div>
+      <div className="block-search">
         <input
+          className="block-search__input"
           type="text"
           placeholder="search creature race"
           onChange={this.handleInputChange}
         />
-        <button onClick={this.handleButtonClick}>search</button>
+        <button
+          className="block-search__button"
+          onClick={this.handleButtonClick}
+        >
+          search
+        </button>
       </div>
     );
   }

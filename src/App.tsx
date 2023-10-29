@@ -66,7 +66,7 @@ class App extends Component<Record<string, never>, State> {
           callbackSearch={this.fetchData.bind(this)}
         />
         {!this.state.checkSearchWord ? (
-          <div>Not found, write another request</div>
+          <div className="warning-search">Not found, write another request</div>
         ) : (
           ""
         )}
