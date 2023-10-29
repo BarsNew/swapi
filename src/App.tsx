@@ -1,35 +1,60 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { Component } from "react";
+import { Species } from "./Type/Type";
 import "./App.css";
+import Output from "./Componets/Output/Output";
 
-function App() {
-  const [count, setCount] = useState(0);
+type State = {
+  dataSW: Species[];
+  countPage: number;
+};
+class App extends Component<State> {
+  state = {
+    dataSW: [],
+    countPage: 1,
+  };
 
-  return (
-    <>
+  eventСounterDicrement() {
+    this.setState({ countPage: this.state.countPage - 1 });
+  }
+
+  eventСounterIncrement() {
+    this.setState({ countPage: this.state.countPage + 1 });
+  }
+
+  componentDidUpdate(_: State, prevState: State) {
+    if (prevState.countPage !== this.state.countPage) {
+      this.fetchData();
+    }
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    fetch("https://swapi.dev/api/species/?page=" + this.state.countPage)
+      .then((res) => res.json())
+      .then((answer: { results: Species[] }) => {
+        this.setState({ dataSW: answer.results });
+      });
+  }
+
+  render() {
+    if (this.state.dataSW.length === 0) {
+      return <div>Loading...</div>;
+    }
+
+    return (
       <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <Output
+          data={this.state.dataSW}
+          counterPlus={this.eventСounterIncrement.bind(this)}
+          counterMinus={this.eventСounterDicrement.bind(this)}
+          numberPagination={this.state.countPage}
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  );
+    );
+  }
 }
 
 export default App;
