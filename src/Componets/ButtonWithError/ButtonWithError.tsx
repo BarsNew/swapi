@@ -1,28 +1,17 @@
-import { Component } from "react";
+import { useState } from "react";
 
-type inputVariables = {
-  hasError: boolean;
-};
+function ButtonWithError() {
+  const [hasError, setHasError] = useState<boolean>(false);
 
-class ButtonWithError extends Component<Record<string, never>, inputVariables> {
-  state = {
-    hasError: false,
-  };
-
-  render() {
-    if (this.state.hasError) {
-      throw Error("A specially caused error");
-    }
-
-    return (
-      <button
-        style={{ margin: 20 }}
-        onClick={() => this.setState({ hasError: true })}
-      >
-        Сalling an error
-      </button>
-    );
+  if (hasError) {
+    throw Error("A specially caused error");
   }
+
+  return (
+    <button style={{ margin: 20 }} onClick={() => setHasError(true)}>
+      Сalling an error
+    </button>
+  );
 }
 
 export default ButtonWithError;

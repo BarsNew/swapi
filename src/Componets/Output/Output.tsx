@@ -1,29 +1,24 @@
-import { Component } from "react";
 import { Species } from "../../Type/Type";
 import CartBlock from "../CartBlock/CartBlock";
 import "./Output.css";
 
-type OutputProps = {
+type Props = {
   data: Species[];
   counterPlus: () => void;
   counterMinus: () => void;
   numberPagination: number;
 };
 
-class Output extends Component<OutputProps> {
-  constructor(props: OutputProps) {
-    super(props);
-  }
-
-  changeCount(
+function Output(props: Props) {
+  function changeCount(
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     callback: () => void,
     direction: string,
   ) {
     const button = event.target as HTMLButtonElement;
     if (
-      (direction === "+" && this.props.numberPagination < 4) ||
-      (direction === "-" && this.props.numberPagination > 1)
+      (direction === "+" && props.numberPagination < 4) ||
+      (direction === "-" && props.numberPagination > 1)
     ) {
       button.disabled = true;
       callback();
@@ -31,28 +26,22 @@ class Output extends Component<OutputProps> {
     }
   }
 
-  render() {
-    return (
-      <div>
-        <button
-          onClick={(ev) => this.changeCount(ev, this.props.counterMinus, "-")}
-        >
-          -
-        </button>
-        <span> {this.props.numberPagination} </span>
-        <button
-          onClick={(ev) => this.changeCount(ev, this.props.counterPlus, "+")}
-        >
-          +
-        </button>
-        <div className="main-block">
-          {this.props.data.map((item: Species) => (
-            <CartBlock key={item.name} dataItem={item} />
-          ))}
-        </div>
+  return (
+    <div>
+      <button onClick={(ev) => changeCount(ev, props.counterMinus, "-")}>
+        -
+      </button>
+      <span> {props.numberPagination} </span>
+      <button onClick={(ev) => changeCount(ev, props.counterPlus, "+")}>
+        +
+      </button>
+      <div className="main-block">
+        {props.data.map((item: Species) => (
+          <CartBlock key={item.name} dataItem={item} />
+        ))}
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default Output;

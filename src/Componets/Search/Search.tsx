@@ -1,50 +1,34 @@
-import { Component, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import "./Search.css";
-import { Species } from "../../Type/Type";
 
 type OutputProps = {
-  data: Species[];
   callbackSearch: (search: string) => void;
 };
 
-type inputVariables = {
-  searchText: string;
-};
+function Search(props: OutputProps) {
+  const [searchText, setSearchText] = useState<string>("");
 
-class Search extends Component<OutputProps, inputVariables> {
-  constructor(props: OutputProps) {
-    super(props);
-    this.state = {
-      searchText: "",
-    };
-  }
-
-  handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchText: event.target.value });
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
   };
 
-  handleButtonClick = () => {
-    this.props.callbackSearch(this.state.searchText);
+  const handleButtonClick = () => {
+    props.callbackSearch(searchText);
   };
 
-  render() {
-    return (
-      <div className="block-search">
-        <input
-          className="block-search__input"
-          type="text"
-          placeholder="search creature race"
-          onChange={this.handleInputChange}
-        />
-        <button
-          className="block-search__button"
-          onClick={this.handleButtonClick}
-        >
-          search
-        </button>
-      </div>
-    );
-  }
+  return (
+    <div className="block-search">
+      <input
+        className="block-search__input"
+        type="text"
+        placeholder="search creature race"
+        onChange={handleInputChange}
+      />
+      <button className="block-search__button" onClick={handleButtonClick}>
+        search
+      </button>
+    </div>
+  );
 }
 
 export default Search;

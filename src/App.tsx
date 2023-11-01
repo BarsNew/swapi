@@ -1,85 +1,68 @@
-import { Component } from "react";
+import { useState, useEffect } from "react";
 import { Species } from "./Type/Type";
 import "./App.css";
 import Output from "./Componets/Output/Output";
 import Search from "./Componets/Search/Search";
 import ButtonWithError from "./Componets/ButtonWithError/ButtonWithError";
 
-type State = {
-  dataSW: Species[];
-  countPage: number;
-  checkSearchWord: boolean;
-};
-class App extends Component<Record<string, never>, State> {
-  state = {
-    dataSW: [],
-    countPage: 1,
-    checkSearchWord: true,
-  };
+function App() {
+  const [dataSW, setDataSW] = useState<Species[]>([]);
+  const [countPage, setCountPage] = useState<number>(1);
+  const [checkSearchWord, setCheckSearchWord] = useState<boolean>(true);
 
-  writeWordLocal(word: string) {
+  function writeWordLocal(word: string) {
     localStorage.setItem("searchWord", word);
   }
 
-  eventСounterDicrement() {
-    this.setState({ countPage: this.state.countPage - 1 });
+  function eventСounterDicrement() {
+    setCountPage(countPage - 1);
   }
 
-  eventСounterIncrement() {
-    this.setState({ countPage: this.state.countPage + 1 });
+  function eventСounterIncrement() {
+    setCountPage(countPage + 1);
   }
 
-  componentDidUpdate(_: never, prevState: State) {
-    if (prevState.countPage !== this.state.countPage) {
-      this.fetchData();
-    }
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     const searchWord = localStorage.getItem("searchWord") || "";
-    this.fetchData(searchWord);
-  }
+    fetchData(searchWord);
+  }, [countPage]);
 
-  fetchData(search = "") {
+  function fetchData(search = "") {
     const wordSearch = search
       ? "https://swapi.dev/api/species/?search=" + search
-      : "https://swapi.dev/api/species/?page=" + this.state.countPage;
+      : "https://swapi.dev/api/species/?page=" + countPage;
     fetch(wordSearch)
       .then((res) => res.json())
       .then((answer: { results: Species[] }) => {
         if (answer.results.length) {
-          this.setState({ dataSW: answer.results, checkSearchWord: true });
-          this.writeWordLocal(search);
-        } else this.setState({ checkSearchWord: false });
+          setDataSW(answer.results);
+          setCheckSearchWord(true);
+          writeWordLocal(search);
+        } else setCheckSearchWord(false);
       });
   }
 
-  render() {
-    if (this.state.dataSW.length === 0) {
-      return <div>Loading...</div>;
-    }
-
-    return (
-      <div>
-        <Search
-          data={this.state.dataSW}
-          callbackSearch={this.fetchData.bind(this)}
-        />
-        {!this.state.checkSearchWord ? (
-          <div className="warning-search">Not found, write another request</div>
-        ) : (
-          ""
-        )}
-        <Output
-          data={this.state.dataSW}
-          counterPlus={this.eventСounterIncrement.bind(this)}
-          counterMinus={this.eventСounterDicrement.bind(this)}
-          numberPagination={this.state.countPage}
-        />
-        <ButtonWithError />
-      </div>
-    );
+  if (dataSW.length === 0) {
+    return <div>Loading...</div>;
   }
+
+  return (
+    <div>
+      <Search callbackSearch={fetchData} />
+      {!checkSearchWord ? (
+        <div className="warning-search">Not found, write another request</div>
+      ) : (
+        ""
+      )}
+      <Output
+        data={dataSW}
+        counterPlus={eventСounterIncrement}
+        counterMinus={eventСounterDicrement}
+        numberPagination={countPage}
+      />
+      <ButtonWithError />
+    </div>
+  );
 }
 
 export default App;
