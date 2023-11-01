@@ -1,0 +1,9 @@
+.block-search {
+  margin: 20px;
+}
+
+.block-search__input,
+.block-search__button {
+  display: inline-block;
+  margin: 0 10px;
+}
