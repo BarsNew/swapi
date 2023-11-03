@@ -3,6 +3,7 @@ import "./Search.css";
 
 type OutputProps = {
   callbackSearch: (search: string) => void;
+  installSearch: (search: string) => void;
 };
 
 function Search(props: OutputProps) {
@@ -14,6 +15,7 @@ function Search(props: OutputProps) {
 
   const handleButtonClick = () => {
     props.callbackSearch(searchText);
+    props.installSearch(searchText);
   };
 
   return (

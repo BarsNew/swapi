@@ -1,6 +1,7 @@
 import { Species } from "../../Type/Type";
 import CartBlock from "../CartBlock/CartBlock";
 import "./Output.css";
+import { Link } from "react-router-dom";
 
 type Props = {
   data: Species[];
@@ -37,7 +38,12 @@ function Output(props: Props) {
       </button>
       <div className="main-block">
         {props.data.map((item: Species) => (
-          <CartBlock key={item.name} dataItem={item} />
+          <Link
+            to={"?page" + props.numberPagination + "&detalis=" + item.name}
+            key={item.name}
+          >
+            <CartBlock dataItem={item} />
+          </Link>
         ))}
       </div>
     </div>
