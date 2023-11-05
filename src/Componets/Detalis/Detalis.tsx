@@ -47,14 +47,16 @@ function Detalis() {
   if (isLoading)
     return (
       <div className={`${isHidden ? "details" : "details hidden"}`}>
-        Loading...
+        <p>Loading...</p>
       </div>
     );
 
   if (Object.entries(propertySpecis).length > 1) {
     return (
       <div className={`${isHidden ? "details" : "details hidden"}`}>
-        <button onClick={installHidden}>X</button>
+        <div className="div-button">
+          <button onClick={installHidden}>×</button>
+        </div>
         {Object.entries(propertySpecis).map(([keyObj, value]) => {
           if (typeof value === "string") {
             return (
@@ -69,7 +71,7 @@ function Detalis() {
     );
   }
 
-  return <></>;
+  return <div className="details"></div>;
 }
 
 export default Detalis;

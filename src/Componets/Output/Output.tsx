@@ -34,13 +34,15 @@ function Output(props: Props) {
 
   return (
     <div>
-      <button onClick={(ev) => changeCount(ev, props.counterMinus, "-")}>
-        -
-      </button>
-      <span> {props.numberPagination} </span>
-      <button onClick={(ev) => changeCount(ev, props.counterPlus, "+")}>
-        +
-      </button>
+      <div className="div-button-output">
+        <button onClick={(ev) => changeCount(ev, props.counterMinus, "-")}>
+          -
+        </button>
+        <span> {props.numberPagination} </span>
+        <button onClick={(ev) => changeCount(ev, props.counterPlus, "+")}>
+          +
+        </button>
+      </div>
       <div className="main-block">
         {props.data.map((item: Species) => (
           <Link

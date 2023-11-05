@@ -1,3 +1,13 @@
+.details {
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+}
+
 .details.hidden {
   display: none;
+}
+
+.div-button {
+  text-align: right;
 }

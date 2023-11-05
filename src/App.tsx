@@ -20,6 +20,7 @@ function App() {
   const [dataSW, setDataSW] = useState<Species[]>([]);
   const [countPage, setCountPage] = useState<number>(pageValue);
   const [checkSearchWord, setCheckSearchWord] = useState<boolean>(true);
+  const [hideDetailsValue, setHideDetailsValue] = useState(false);
 
   const navigate = useNavigate();
 
@@ -37,6 +38,16 @@ function App() {
   function eventСounterIncrement() {
     setCountPage(countPage + 1);
     changePage(countPage + 1);
+  }
+
+  function hideDetails(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    setHideDetailsValue(true);
+    if (
+      (event.target as HTMLElement).tagName == "H2" ||
+      (event.target as HTMLElement).tagName == "A"
+    ) {
+      setHideDetailsValue(false);
+    }
   }
 
   useEffect(() => {
@@ -82,13 +93,17 @@ function App() {
       ) : (
         ""
       )}
-      <Output
-        data={dataSW}
-        counterPlus={eventСounterIncrement}
-        counterMinus={eventСounterDicrement}
-        numberPagination={countPage}
-      />
-      <Outlet />
+      <div className="output-detalis">
+        <div onClick={hideDetails}>
+          <Output
+            data={dataSW}
+            counterPlus={eventСounterIncrement}
+            counterMinus={eventСounterDicrement}
+            numberPagination={countPage}
+          />
+        </div>
+        <div className="app-outlet">{hideDetailsValue ? "" : <Outlet />}</div>
+      </div>
       <ButtonWithError />
     </div>
   );
