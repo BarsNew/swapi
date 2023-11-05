@@ -4,7 +4,6 @@ import "./Detalis.css";
 
 function Detalis() {
   const detalisNumb = useLoaderData();
-  console.log(detalisNumb);
   const [propertySpecis, setPropertySpecis] = useState<{ detail?: string }>({});
   const [isLoading, setIsLoading] = useState(true);
   const [isHidden, setIsHidden] = useState(true);
@@ -39,7 +38,7 @@ function Detalis() {
   ) {
     return (
       <div className={`${isHidden ? "details" : "details hidden"}`}>
-        Data no found
+        <p className="detalis-other">Data no found</p>
       </div>
     );
   }
@@ -47,7 +46,7 @@ function Detalis() {
   if (isLoading)
     return (
       <div className={`${isHidden ? "details" : "details hidden"}`}>
-        <p>Loading...</p>
+        <p className="detalis-other">Loading...</p>
       </div>
     );
 

@@ -11,20 +11,16 @@ import { Outlet } from "react-router-dom";
 function App() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const searchValue = searchParams.get("search");
   const pageValue = searchParams.get("page")
     ? Number(searchParams.get("page"))
     : 1;
-
-  //console.log(searchParams.get("detalis"));
   const [dataSW, setDataSW] = useState<Species[]>([]);
   const [countPage, setCountPage] = useState<number>(pageValue);
   const [checkSearchWord, setCheckSearchWord] = useState<boolean>(true);
   const [hideDetailsValue, setHideDetailsValue] = useState(false);
+  const [isLoad, setIsload] = useState(false);
 
   const navigate = useNavigate();
-
-  if (searchValue) fetchData(searchValue);
 
   function writeWordLocal(word: string) {
     localStorage.setItem("searchWord", word);
@@ -61,15 +57,19 @@ function App() {
   }
 
   function changeSearch(searchWord: string) {
-    navigate("");
     if (searchWord) navigate(`?search=${searchWord}`);
+    else {
+      navigate("");
+      localStorage.setItem("searchWord", "");
+      setCountPage(1);
+    }
   }
 
   function fetchData(search = "") {
     const wordSearch = search
       ? "https://swapi.dev/api/species/?search=" + search
       : "https://swapi.dev/api/species/?page=" + countPage;
-
+    setIsload(true);
     fetch(wordSearch)
       .then((res) => res.json())
       .then((answer: { results: Species[] }) => {
@@ -77,12 +77,13 @@ function App() {
           setDataSW(answer.results);
           setCheckSearchWord(true);
           writeWordLocal(search);
+          setIsload(false);
         } else setCheckSearchWord(false);
       });
   }
 
   if (dataSW.length === 0) {
-    return <div>Loading...</div>;
+    return <div style={{ margin: "150px" }}>Loading...</div>;
   }
 
   return (
@@ -93,17 +94,21 @@ function App() {
       ) : (
         ""
       )}
-      <div className="output-detalis">
-        <div onClick={hideDetails}>
-          <Output
-            data={dataSW}
-            counterPlus={eventСounterIncrement}
-            counterMinus={eventСounterDicrement}
-            numberPagination={countPage}
-          />
+      {isLoad ? (
+        <div style={{ margin: "150px" }}>Loading...</div>
+      ) : (
+        <div className="output-detalis">
+          <div onClick={hideDetails}>
+            <Output
+              data={dataSW}
+              counterPlus={eventСounterIncrement}
+              counterMinus={eventСounterDicrement}
+              numberPagination={countPage}
+            />
+          </div>
+          <div className="app-outlet">{hideDetailsValue ? "" : <Outlet />}</div>
         </div>
-        <div className="app-outlet">{hideDetailsValue ? "" : <Outlet />}</div>
-      </div>
+      )}
       <ButtonWithError />
     </div>
   );

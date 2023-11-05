@@ -68,6 +68,7 @@ button:focus-visible {
 
 .output-detalis {
   display: flex;
+  justify-content: center;
 }
 
 .app-outlet {
