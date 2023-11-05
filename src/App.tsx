@@ -16,6 +16,7 @@ function App() {
     ? Number(searchParams.get("page"))
     : 1;
 
+  //console.log(searchParams.get("detalis"));
   const [dataSW, setDataSW] = useState<Species[]>([]);
   const [countPage, setCountPage] = useState<number>(pageValue);
   const [checkSearchWord, setCheckSearchWord] = useState<boolean>(true);

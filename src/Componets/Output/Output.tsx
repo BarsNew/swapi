@@ -27,6 +27,11 @@ function Output(props: Props) {
     }
   }
 
+  function calculatePosition(url: string) {
+    const arrUrl = url.split("/");
+    return arrUrl[arrUrl.length - 2];
+  }
+
   return (
     <div>
       <button onClick={(ev) => changeCount(ev, props.counterMinus, "-")}>
@@ -39,7 +44,13 @@ function Output(props: Props) {
       <div className="main-block">
         {props.data.map((item: Species) => (
           <Link
-            to={"?page" + props.numberPagination + "&detalis=" + item.name}
+            className="main-block_item"
+            to={
+              "?page=" +
+              props.numberPagination +
+              "&detalis=" +
+              calculatePosition(item.url)
+            }
             key={item.name}
           >
             <CartBlock dataItem={item} />

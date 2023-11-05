@@ -16,10 +16,17 @@ const router = createBrowserRouter([
       </ErrorBoundary>
     ),
     errorElement: <Error />,
+
     children: [
       {
-        path: "/?page1&detalis=Human",
+        path: "",
         element: <Detalis />,
+        loader: (request) => {
+          const url = new URL(request.request.url);
+          const detalis = url.searchParams.get("detalis");
+          if (detalis) return detalis;
+          else return "";
+        },
       },
     ],
   },

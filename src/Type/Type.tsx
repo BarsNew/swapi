@@ -9,4 +9,5 @@ export type Species = {
   average_lifespan: string;
   homeworld: string;
   language: string;
+  url: string;
 };
