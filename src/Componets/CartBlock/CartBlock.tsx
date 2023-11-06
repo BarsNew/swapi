@@ -8,7 +8,7 @@ type OutputProps = {
 function CartBlock(props: OutputProps) {
   return (
     <>
-      <h2>{props.dataItem.name}</h2>
+      <h2 className="noexit">{props.dataItem.name}</h2>
     </>
   );
 }

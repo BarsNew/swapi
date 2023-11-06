@@ -4,12 +4,12 @@ import "./App.css";
 import Output from "./Componets/Output/Output";
 import Search from "./Componets/Search/Search";
 import ButtonWithError from "./Componets/ButtonWithError/ButtonWithError";
-//import Navigation from "./Componets/Navigation/Navigation";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const pageValue = searchParams.get("page")
     ? Number(searchParams.get("page"))
@@ -17,10 +17,7 @@ function App() {
   const [dataSW, setDataSW] = useState<Species[]>([]);
   const [countPage, setCountPage] = useState<number>(pageValue);
   const [checkSearchWord, setCheckSearchWord] = useState<boolean>(true);
-  const [hideDetailsValue, setHideDetailsValue] = useState(false);
   const [isLoad, setIsload] = useState(false);
-
-  const navigate = useNavigate();
 
   function writeWordLocal(word: string) {
     localStorage.setItem("searchWord", word);
@@ -37,12 +34,10 @@ function App() {
   }
 
   function hideDetails(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    setHideDetailsValue(true);
-    if (
-      (event.target as HTMLElement).tagName == "H2" ||
-      (event.target as HTMLElement).tagName == "A"
-    ) {
-      setHideDetailsValue(false);
+    if (!(event.target as HTMLElement).classList.contains("noexit")) {
+      searchParams.delete("detalis");
+      console.log(searchParams.toString());
+      navigate("?" + searchParams.toString());
     }
   }
 
@@ -98,15 +93,16 @@ function App() {
         <div style={{ margin: "150px" }}>Loading...</div>
       ) : (
         <div className="output-detalis">
-          <div onClick={hideDetails}>
+          <div>
             <Output
               data={dataSW}
               counterPlus={eventСounterIncrement}
               counterMinus={eventСounterDicrement}
               numberPagination={countPage}
+              hideDetails={hideDetails}
             />
           </div>
-          <div className="app-outlet">{hideDetailsValue ? "" : <Outlet />}</div>
+          <Outlet />
         </div>
       )}
       <ButtonWithError />

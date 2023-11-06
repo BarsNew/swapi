@@ -8,6 +8,7 @@ type Props = {
   counterPlus: () => void;
   counterMinus: () => void;
   numberPagination: number;
+  hideDetails: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 
 function Output(props: Props) {
@@ -43,10 +44,10 @@ function Output(props: Props) {
           +
         </button>
       </div>
-      <div className="main-block">
+      <div className="main-block" onClick={props.hideDetails}>
         {props.data.map((item: Species) => (
           <Link
-            className="main-block_item"
+            className="main-block_item noexit"
             to={
               "?page=" +
               props.numberPagination +

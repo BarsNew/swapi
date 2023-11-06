@@ -1,18 +1,23 @@
 import { useState, useEffect } from "react";
 import { useLoaderData } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Detalis.css";
 
 function Detalis() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const detalisNumb = useLoaderData();
   const [propertySpecis, setPropertySpecis] = useState<{ detail?: string }>({});
   const [isLoading, setIsLoading] = useState(true);
   const [isHidden, setIsHidden] = useState(true);
 
   const installHidden = () => {
-    setIsHidden(false);
+    const searchParams = new URLSearchParams(location.search);
+    navigate(`?page=${searchParams.get("page")}`);
   };
 
   useEffect(() => {
+    console.log(1234);
     if (detalisNumb) {
       setIsLoading(true);
       setTimeout(() => {
@@ -53,7 +58,7 @@ function Detalis() {
   if (Object.entries(propertySpecis).length > 1) {
     return (
       <div className={`${isHidden ? "details" : "details hidden"}`}>
-        <div className="div-button">
+        <div className="div-button noexit">
           <button onClick={installHidden}>×</button>
         </div>
         {Object.entries(propertySpecis).map(([keyObj, value]) => {
