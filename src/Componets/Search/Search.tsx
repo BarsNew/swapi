@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import "./Search.css";
 
 type OutputProps = {
@@ -18,9 +18,15 @@ function Search(props: OutputProps) {
     props.installSearch(searchText);
   };
 
+  useEffect(() => {
+    const storedValue = localStorage.getItem("searchWord");
+    if (storedValue) setSearchText(storedValue);
+  }, []);
+
   return (
     <div className="block-search">
       <input
+        value={searchText}
         className="block-search__input"
         type="text"
         placeholder="search creature race"

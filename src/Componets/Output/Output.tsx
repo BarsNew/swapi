@@ -8,7 +8,7 @@ type Props = {
   counterPlus: () => void;
   counterMinus: () => void;
   numberPagination: number;
-  hideDetails: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  openBlockPagination: boolean;
 };
 
 function Output(props: Props) {
@@ -35,16 +35,26 @@ function Output(props: Props) {
 
   return (
     <div>
-      <div className="div-button-output">
-        <button onClick={(ev) => changeCount(ev, props.counterMinus, "-")}>
-          -
-        </button>
-        <span> {props.numberPagination} </span>
-        <button onClick={(ev) => changeCount(ev, props.counterPlus, "+")}>
-          +
-        </button>
-      </div>
-      <div className="main-block" onClick={props.hideDetails}>
+      {!props.openBlockPagination ? (
+        ""
+      ) : (
+        <div className="div-button-output">
+          <button
+            className="noexit"
+            onClick={(ev) => changeCount(ev, props.counterMinus, "-")}
+          >
+            -
+          </button>
+          <span> {props.numberPagination} </span>
+          <button
+            className="noexit"
+            onClick={(ev) => changeCount(ev, props.counterPlus, "+")}
+          >
+            +
+          </button>
+        </div>
+      )}
+      <div className="main-block">
         {props.data.map((item: Species) => (
           <Link
             className="main-block_item noexit"

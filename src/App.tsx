@@ -18,6 +18,7 @@ function App() {
   const [countPage, setCountPage] = useState<number>(pageValue);
   const [checkSearchWord, setCheckSearchWord] = useState<boolean>(true);
   const [isLoad, setIsload] = useState(false);
+  const [openBlockPagination, setOpenBlockPagination] = useState(true);
 
   function writeWordLocal(word: string) {
     localStorage.setItem("searchWord", word);
@@ -36,7 +37,6 @@ function App() {
   function hideDetails(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if (!(event.target as HTMLElement).classList.contains("noexit")) {
       searchParams.delete("detalis");
-      console.log(searchParams.toString());
       navigate("?" + searchParams.toString());
     }
   }
@@ -60,7 +60,13 @@ function App() {
     }
   }
 
+  function setupBlockPagination(searchStr: string) {
+    if (searchStr) setOpenBlockPagination(false);
+    else setOpenBlockPagination(true);
+  }
+
   function fetchData(search = "") {
+    setupBlockPagination(search);
     const wordSearch = search
       ? "https://swapi.dev/api/species/?search=" + search
       : "https://swapi.dev/api/species/?page=" + countPage;
@@ -92,14 +98,14 @@ function App() {
       {isLoad ? (
         <div style={{ margin: "150px" }}>Loading...</div>
       ) : (
-        <div className="output-detalis">
+        <div className="output-detalis" onClick={hideDetails}>
           <div>
             <Output
               data={dataSW}
               counterPlus={eventСounterIncrement}
               counterMinus={eventСounterDicrement}
               numberPagination={countPage}
-              hideDetails={hideDetails}
+              openBlockPagination={openBlockPagination}
             />
           </div>
           <Outlet />

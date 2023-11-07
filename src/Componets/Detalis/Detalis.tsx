@@ -17,7 +17,6 @@ function Detalis() {
   };
 
   useEffect(() => {
-    console.log(1234);
     if (detalisNumb) {
       setIsLoading(true);
       setTimeout(() => {
@@ -42,7 +41,7 @@ function Detalis() {
     propertySpecis.detail === "Not found"
   ) {
     return (
-      <div className={`${isHidden ? "details" : "details hidden"}`}>
+      <div className={`${isHidden ? "details noexit" : "details hidden"}`}>
         <p className="detalis-other">Data no found</p>
       </div>
     );
@@ -50,21 +49,21 @@ function Detalis() {
 
   if (isLoading)
     return (
-      <div className={`${isHidden ? "details" : "details hidden"}`}>
+      <div className={`${isHidden ? "details noexit" : "details hidden"}`}>
         <p className="detalis-other">Loading...</p>
       </div>
     );
 
   if (Object.entries(propertySpecis).length > 1) {
     return (
-      <div className={`${isHidden ? "details" : "details hidden"}`}>
+      <div className={`${isHidden ? "details noexit" : "details hidden"}`}>
         <div className="div-button noexit">
           <button onClick={installHidden}>×</button>
         </div>
         {Object.entries(propertySpecis).map(([keyObj, value]) => {
           if (typeof value === "string") {
             return (
-              <p key={keyObj}>
+              <p key={keyObj} className="noexit">
                 {keyObj}: {value}
               </p>
             );
