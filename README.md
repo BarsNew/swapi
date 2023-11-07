@@ -1,1 +1,3 @@
-# swapi
+# React + TypeScript + Vite
+
+swapi
