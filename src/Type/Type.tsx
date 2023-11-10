@@ -1,4 +1,5 @@
 export type Species = {
+  count?: number;
   name: string;
   classification: string;
   designation: string;

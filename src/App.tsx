@@ -6,6 +6,7 @@ import Search from "./Componets/Search/Search";
 import ButtonWithError from "./Componets/ButtonWithError/ButtonWithError";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import Context from "./Componets/Context/Context";
 
 function App() {
   const location = useLocation();
@@ -19,6 +20,7 @@ function App() {
   const [checkSearchWord, setCheckSearchWord] = useState<boolean>(true);
   const [isLoad, setIsload] = useState(false);
   const [openBlockPagination, setOpenBlockPagination] = useState(true);
+  const [fullCountPosition, setFullCountPosition] = useState(10);
 
   function writeWordLocal(word: string) {
     localStorage.setItem("searchWord", word);
@@ -73,8 +75,9 @@ function App() {
     setIsload(true);
     fetch(wordSearch)
       .then((res) => res.json())
-      .then((answer: { results: Species[] }) => {
+      .then((answer: { count: number; results: Species[] }) => {
         if (answer.results.length) {
+          setFullCountPosition(answer.count);
           setDataSW(answer.results);
           setCheckSearchWord(true);
           writeWordLocal(search);
@@ -88,31 +91,33 @@ function App() {
   }
 
   return (
-    <div>
-      <Search callbackSearch={fetchData} installSearch={changeSearch} />
-      {!checkSearchWord ? (
-        <div className="warning-search">Not found, write another request</div>
-      ) : (
-        ""
-      )}
-      {isLoad ? (
-        <div style={{ margin: "150px" }}>Loading...</div>
-      ) : (
-        <div className="output-detalis" onClick={hideDetails}>
-          <div>
-            <Output
-              data={dataSW}
-              counterPlus={eventСounterIncrement}
-              counterMinus={eventСounterDicrement}
-              numberPagination={countPage}
-              openBlockPagination={openBlockPagination}
-            />
+    <Context.Provider value={fullCountPosition}>
+      <div>
+        <Search fetchData={fetchData} changeSearch={changeSearch} />
+        {!checkSearchWord ? (
+          <div className="warning-search">Not found, write another request</div>
+        ) : (
+          ""
+        )}
+        {isLoad ? (
+          <div style={{ margin: "150px" }}>Loading...</div>
+        ) : (
+          <div className="output-detalis" onClick={hideDetails}>
+            <div>
+              <Output
+                data={dataSW}
+                counterPlus={eventСounterIncrement}
+                counterMinus={eventСounterDicrement}
+                numberPagination={countPage}
+                openBlockPagination={openBlockPagination}
+              />
+            </div>
+            <Outlet />
           </div>
-          <Outlet />
-        </div>
-      )}
-      <ButtonWithError />
-    </div>
+        )}
+        <ButtonWithError />
+      </div>
+    </Context.Provider>
   );
 }
 
